@@ -3,133 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ace Key System</title>
+<title>Ace Key System • v2</title>
 
 <style>
-:root{
---bg:#0a0a0f;
---card:#111118;
---text:#e2e8f0;
---dim:#94a3b8;
---accent:#22c55e;
---border:rgba(255,255,255,.08);
+:root {
+  --bg: #0a0a0f;
+  --card: #111118;
+  --text: #e2e8f0;
+  --dim: #94a3b8;
+  --accent: #22c55e;
+  --accent-dark: #16a34a;
+  --glow: rgba(34, 197, 94, 0.25);
+  --border: rgba(255,255,255,0.07);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-background:var(--bg);
-color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:16px;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+  position: relative;
 }
-.container{
-width:100%;
-max-width:420px;
-background:var(--card);
-border-radius:16px;
-border:1px solid var(--border);
-padding:22px;
-text-align:center;
+
+/* Animated background gradient + subtle float */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #0a0a0f 100%);
+  animation: gradientShift 18s ease infinite;
+  z-index: -2;
 }
-h1{
-font-size:1.6rem;
-margin-bottom:6px;
-background:linear-gradient(90deg,#a1e65c,#4ade80);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
-.sub{
-font-size:.9rem;
-color:var(--dim);
-margin-bottom:18px;
+
+/* Floating subtle particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
 }
-.key-box{
-background:#16161f;
-border:1px dashed var(--border);
-border-radius:12px;
-padding:16px;
-font-size:1.05rem;
-letter-spacing:1px;
-margin-bottom:14px;
-word-break:break-all;
+
+.particle {
+  position: absolute;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.12;
+  animation: float linear infinite;
 }
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-font-weight:700;
-cursor:pointer;
-background:#1e1e2e;
-color:var(--text);
-margin-bottom:10px;
+
+@keyframes float {
+  0%   { transform: translateY(100vh) scale(0.4); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-20vh) scale(0.7); opacity: 0; }
 }
-button.primary{
-background:var(--accent);
-color:#000;
+
+.container {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,197,94,0.08) inset;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  animation: appear 0.8s ease-out;
 }
-button:hover{opacity:.9}
-.status{
-font-size:.85rem;
-color:var(--dim);
-margin-top:10px;
-min-height:1.2em;
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-.footer{
-margin-top:16px;
-font-size:.75rem;
-color:var(--dim);
-opacity:.6;
+
+h1 {
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #a1e65c, #4ade80, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+.sub {
+  font-size: 0.96rem;
+  color: var(--dim);
+  margin: 0 0 28px;
+  letter-spacing: 0.3px;
+}
+
+.key-box {
+  background: #16161f;
+  border: 2px dashed rgba(34,197,94,0.3);
+  border-radius: 16px;
+  padding: 20px 16px;
+  font-size: 1.25rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-all;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.key-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(34,197,94,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 1.2s;
+}
+
+.key-box.active::before {
+  transform: translateX(100%);
+}
+
+.key-box.glow {
+  box-shadow: 0 0 30px var(--glow);
+  border-color: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(34,197,94,0.15); }
+  50%      { box-shadow: 0 0 40px rgba(34,197,94,0.4); }
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+button.primary {
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  color: #000;
+  box-shadow: 0 8px 25px rgba(34,197,94,0.35);
+}
+
+button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(34,197,94,0.5);
+}
+
+button.secondary {
+  background: #1e1e2e;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+button.secondary:hover {
+  background: #25253a;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: none !important;
+}
+
+button.loading::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #000;
+  border-top-color: transparent;
+  border-radius: 50%;
+  right: 16px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.status {
+  font-size: 0.9rem;
+  color: var(--dim);
+  margin-top: 16px;
+  min-height: 1.4em;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.status.show { opacity: 1; }
+
+.success { color: #4ade80; }
+.error   { color: #f87171; }
+
+.footer {
+  margin-top: 28px;
+  font-size: 0.82rem;
+  color: var(--dim);
+  opacity: 0.65;
 }
 </style>
 </head>
 
 <body>
 
+<div class="particles" id="particles"></div>
+
 <div class="container">
-<h1>Ace Key System</h1>
-<div class="sub">Generate a key to access the script</div>
+  <h1>Ace Key System</h1>
+  <div class="sub">Generate your access key • v2</div>
 
-<div id="key" class="key-box">Click generate</div>
+  <div id="key" class="key-box">Click Generate to begin</div>
 
-<button class="primary" onclick="generateKey()">Generate Key</button>
-<button onclick="copyKey()">Copy Key</button>
+  <button class="primary" id="generateBtn">Generate Key</button>
+  <button class="secondary" id="copyBtn">Copy Key</button>
 
-<div id="status" class="status"></div>
+  <div id="status" class="status"></div>
 
-<div class="footer">
-made by Aceii_ • Key system v1
-</div>
+  <div class="footer">
+    made with ♥ by Aceii_ • Key system v2 • 2026
+  </div>
 </div>
 
 <script>
-function randomBlock(len){
-const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-let out=""
-for(let i=0;i<len;i++){
-out+=chars[Math.floor(Math.random()*chars.length)]
-}
-return out
+// Simple background particles
+function createParticles() {
+  const container = document.getElementById('particles');
+  for(let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (Math.random() * 20 + 15) + 's';
+    p.style.animationDelay = Math.random() * -25 + 's';
+    container.appendChild(p);
+  }
 }
 
-function generateKey(){
-const key=`ACE-${randomBlock(4)}-${randomBlock(4)}`
-document.getElementById("key").textContent=key
-document.getElementById("status").textContent="Key generated. Use it in the script."
+createParticles();
+
+const keyDisplay = document.getElementById('key');
+const statusEl = document.getElementById('status');
+const generateBtn = document.getElementById('generateBtn');
+const copyBtn = document.getElementById('copyBtn');
+
+function randomBlock(len) {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let out = "";
+  for(let i = 0; i < len; i++) {
+    out += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return out;
 }
 
-function copyKey(){
-const text=document.getElementById("key").textContent
-if(!text || text==="Click generate"){
-document.getElementById("status").textContent="Generate a key first."
-return
+function showStatus(text, type = 'normal') {
+  statusEl.textContent = text;
+  statusEl.className = 'status show ' + type;
 }
-navigator.clipboard.writeText(text)
-document.getElementById("status").textContent="Key copied to clipboard."
+
+function generateKey() {
+  generateBtn.classList.add('loading');
+  generateBtn.textContent = 'Generating...';
+  generateBtn.disabled = true;
+
+  setTimeout(() => {
+    const key = `ACE-${randomBlock(4)}-${randomBlock(4)}-${randomBlock(3)}`;
+    keyDisplay.textContent = key;
+    keyDisplay.classList.add('glow', 'active');
+
+    setTimeout(() => keyDisplay.classList.remove('active'), 1200);
+
+    showStatus("Key generated successfully!", "success");
+
+    generateBtn.classList.remove('loading');
+    generateBtn.textContent = 'Generate New Key';
+    generateBtn.disabled = false;
+  }, 900);
 }
+
+function copyKey() {
+  const text = keyDisplay.textContent.trim();
+  if (!text || text.includes('Click') || text.includes('Generate')) {
+    showStatus("Generate a key first!", "error");
+    return;
+  }
+
+  navigator.clipboard.writeText(text)
+    .then(() => showStatus("Key copied to clipboard ✓", "success"))
+    .catch(() => showStatus("Failed to copy key", "error"));
+}
+
+generateBtn.addEventListener('click', generateKey);
+copyBtn.addEventListener('click', copyKey);
 </script>
 
 </body>
