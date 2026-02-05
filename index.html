@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ace Key System • v2</title>
+<title>Ace Key System • v3</title>
 
 <style>
 :root {
-  --bg: #0a0a0f;
-  --card: #111118;
-  --text: #e2e8f0;
+  --bg: #09090f;
+  --card: #0f0f17;
+  --text: #f1f5f9;
   --dim: #94a3b8;
   --accent: #22c55e;
-  --accent-dark: #16a34a;
-  --glow: rgba(34, 197, 94, 0.25);
-  --border: rgba(255,255,255,0.07);
+  --accent-glow: rgba(34, 197, 94, 0.3);
+  --border: rgba(255,255,255,0.06);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,85 +21,139 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
+  overflow: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  overflow: hidden;
-  position: relative;
 }
 
-/* Animated background gradient + subtle float */
-body::before {
-  content: "";
+/* Animated background */
+.bg-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #0f172a 0%, #0a0a0f 100%);
-  animation: gradientShift 18s ease infinite;
+  background: radial-gradient(circle at 20% 30%, rgba(34,197,94,0.08), transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(34,197,94,0.06), transparent 50%);
+  animation: breathe 22s ease-in-out infinite;
   z-index: -2;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes breathe {
+  0%,100% { transform: scale(1); opacity: 0.7; }
+  50%     { transform: scale(1.15); opacity: 0.9; }
 }
 
-/* Floating subtle particles */
+/* Particles */
 .particles {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  overflow: hidden;
 }
 
 .particle {
   position: absolute;
   background: var(--accent);
   border-radius: 50%;
-  opacity: 0.12;
-  animation: float linear infinite;
+  opacity: 0;
+  animation: drift linear infinite;
 }
 
-@keyframes float {
-  0%   { transform: translateY(100vh) scale(0.4); opacity: 0; }
-  10%  { opacity: 0.6; }
-  90%  { opacity: 0.6; }
-  100% { transform: translateY(-20vh) scale(0.7); opacity: 0; }
+@keyframes drift {
+  0%   { transform: translateY(120vh) scale(0.3); opacity: 0; }
+  15%  { opacity: 0.5; }
+  85%  { opacity: 0.5; }
+  100% { transform: translateY(-30vh) scale(0.6); opacity: 0; }
 }
 
+/* Intro screen */
+.intro {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 1.2s ease 0.6s, visibility 0s linear 1.8s;
+}
+
+.intro.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.intro h2 {
+  font-size: 3.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #a1e65c, #4ade80, #22c55e, #a1e65c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 300% auto;
+  animation: gradientFlow 5s linear infinite;
+  letter-spacing: -1px;
+  text-shadow: 0 0 40px rgba(34,197,94,0.5);
+}
+
+@keyframes gradientFlow {
+  to { background-position: 300% center; }
+}
+
+.intro .by {
+  margin-top: 16px;
+  font-size: 1.3rem;
+  color: var(--dim);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1.2s ease forwards 0.9s;
+}
+
+.intro .love {
+  font-size: 1.1rem;
+  color: #fda4af;
+  margin-top: 8px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards 1.3s;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Main UI */
 .container {
   width: 100%;
-  max-width: 440px;
+  max-width: 460px;
   background: var(--card);
-  border-radius: 24px;
+  border-radius: 28px;
   border: 1px solid var(--border);
-  padding: 32px 28px;
+  padding: 40px 32px;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,197,94,0.08) inset;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(34,197,94,0.1);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(40px);
+  animation: reveal 1s cubic-bezier(0.23,1,0.32,1) 1.4s forwards;
   position: relative;
   overflow: hidden;
-  animation: appear 0.8s ease-out;
 }
 
-@keyframes appear {
-  from { opacity: 0; transform: translateY(30px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes reveal {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
-  font-size: 2.1rem;
+  font-size: 2.4rem;
   font-weight: 800;
-  margin-bottom: 8px;
-  background: linear-gradient(90deg, #a1e65c, #4ade80, #22c55e);
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #a1e65c, #4ade80);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: shine 4s linear infinite;
+  animation: shine 6s linear infinite;
 }
 
 @keyframes shine {
@@ -108,65 +161,64 @@ h1 {
 }
 
 .sub {
-  font-size: 0.96rem;
+  font-size: 1rem;
   color: var(--dim);
-  margin: 0 0 28px;
-  letter-spacing: 0.3px;
+  margin-bottom: 32px;
 }
 
 .key-box {
-  background: #16161f;
-  border: 2px dashed rgba(34,197,94,0.3);
-  border-radius: 16px;
-  padding: 20px 16px;
-  font-size: 1.25rem;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
-  margin-bottom: 24px;
-  min-height: 68px;
+  background: #0d0d14;
+  border: 2px dashed rgba(34,197,94,0.35);
+  border-radius: 18px;
+  padding: 24px 18px;
+  font-size: 1.35rem;
+  font-family: 'SF Mono', 'Courier New', monospace;
+  letter-spacing: 2.5px;
+  margin-bottom: 28px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   word-break: break-all;
-  transition: all 0.4s ease;
+  transition: all 0.5s ease;
   position: relative;
-  overflow: hidden;
 }
 
-.key-box::before {
+.key-box.ready {
+  border-style: solid;
+  border-color: var(--accent);
+  box-shadow: 0 0 40px var(--accent-glow);
+  animation: keyPulse 3s infinite ease-in-out;
+}
+
+@keyframes keyPulse {
+  0%,100% { box-shadow: 0 0 30px rgba(34,197,94,0.2); }
+  50%     { box-shadow: 0 0 60px rgba(34,197,94,0.45); }
+}
+
+.key-box::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(34,197,94,0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(34,197,94,0.15), transparent);
   transform: translateX(-100%);
-  transition: transform 1.2s;
+  transition: transform 1.5s ease;
 }
 
-.key-box.active::before {
+.key-box.ready::after {
   transform: translateX(100%);
-}
-
-.key-box.glow {
-  box-shadow: 0 0 30px var(--glow);
-  border-color: var(--accent);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(34,197,94,0.15); }
-  50%      { box-shadow: 0 0 40px rgba(34,197,94,0.4); }
 }
 
 button {
   width: 100%;
-  padding: 16px;
+  padding: 18px;
   border: none;
-  border-radius: 14px;
-  font-size: 1.05rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
-  margin-bottom: 12px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: 14px;
   position: relative;
   overflow: hidden;
 }
@@ -174,78 +226,80 @@ button {
 button.primary {
   background: linear-gradient(90deg, #22c55e, #4ade80);
   color: #000;
-  box-shadow: 0 8px 25px rgba(34,197,94,0.35);
+  box-shadow: 0 10px 30px rgba(34,197,94,0.4);
 }
 
 button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(34,197,94,0.5);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 45px rgba(34,197,94,0.55);
 }
 
 button.secondary {
-  background: #1e1e2e;
+  background: #1a1a28;
   color: var(--text);
   border: 1px solid rgba(255,255,255,0.08);
 }
 
 button.secondary:hover {
-  background: #25253a;
-  transform: translateY(-1px);
+  background: #22223a;
+  transform: translateY(-3px);
 }
 
 button:active {
-  transform: translateY(1px);
-  box-shadow: none !important;
+  transform: scale(0.97);
 }
 
 button.loading::after {
   content: "";
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: 3px solid #000;
   border-top-color: transparent;
   border-radius: 50%;
-  right: 16px;
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+  right: 20px;
+  animation: spin 1s linear infinite;
 }
 
 .status {
-  font-size: 0.9rem;
-  color: var(--dim);
-  margin-top: 16px;
-  min-height: 1.4em;
+  font-size: 0.95rem;
+  margin-top: 20px;
+  min-height: 1.5em;
   opacity: 0;
-  transition: opacity 0.4s;
+  transition: opacity 0.5s ease;
 }
 
 .status.show { opacity: 1; }
-
 .success { color: #4ade80; }
 .error   { color: #f87171; }
 
 .footer {
-  margin-top: 28px;
-  font-size: 0.82rem;
+  margin-top: 32px;
+  font-size: 0.85rem;
   color: var(--dim);
-  opacity: 0.65;
+  opacity: 0.7;
 }
 </style>
 </head>
 
 <body>
 
+<div class="bg-gradient"></div>
 <div class="particles" id="particles"></div>
 
-<div class="container">
-  <h1>Ace Key System</h1>
-  <div class="sub">Generate your access key • v2</div>
+<!-- Clean Intro -->
+<div class="intro" id="intro">
+  <h2>Ace</h2>
+  <div class="by">by Aceii_</div>
+  <div class="love">made with love ♡</div>
+</div>
 
-  <div id="key" class="key-box">Click Generate to begin</div>
+<!-- Main UI -->
+<div class="container" id="main">
+  <h1>Ace Key System</h1>
+  <div class="sub">Your premium access key • v3</div>
+
+  <div id="key" class="key-box">Click Generate to start</div>
 
   <button class="primary" id="generateBtn">Generate Key</button>
   <button class="secondary" id="copyBtn">Copy Key</button>
@@ -253,29 +307,33 @@ button.loading::after {
   <div id="status" class="status"></div>
 
   <div class="footer">
-    made with ♥ by Aceii_ • Key system v2 • 2026
+    Aceii_ • Key System v3 • 2026
   </div>
 </div>
 
 <script>
-// Simple background particles
-function createParticles() {
+// Particles
+function spawnParticles() {
   const container = document.getElementById('particles');
-  for(let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    const size = Math.random() * 5 + 2;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
+    const size = Math.random() * 6 + 2;
+    p.style.width = p.style.height = size + 'px';
     p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = (Math.random() * 20 + 15) + 's';
-    p.style.animationDelay = Math.random() * -25 + 's';
+    p.style.animationDuration = (Math.random() * 25 + 18) + 's';
+    p.style.animationDelay = Math.random() * -30 + 's';
     container.appendChild(p);
   }
 }
+spawnParticles();
 
-createParticles();
+// Intro → Main reveal
+setTimeout(() => {
+  document.getElementById('intro').classList.add('hidden');
+}, 2600);
 
+// Key logic
 const keyDisplay = document.getElementById('key');
 const statusEl = document.getElementById('status');
 const generateBtn = document.getElementById('generateBtn');
@@ -283,48 +341,46 @@ const copyBtn = document.getElementById('copyBtn');
 
 function randomBlock(len) {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let out = "";
-  for(let i = 0; i < len; i++) {
-    out += chars[Math.floor(Math.random() * chars.length)];
+  let str = "";
+  for (let i = 0; i < len; i++) {
+    str += chars[Math.floor(Math.random() * chars.length)];
   }
-  return out;
+  return str;
 }
 
-function showStatus(text, type = 'normal') {
-  statusEl.textContent = text;
-  statusEl.className = 'status show ' + type;
+function showStatus(msg, type = '') {
+  statusEl.textContent = msg;
+  statusEl.className = `status show ${type}`;
 }
 
 function generateKey() {
-  generateBtn.classList.add('loading');
-  generateBtn.textContent = 'Generating...';
   generateBtn.disabled = true;
+  generateBtn.classList.add('loading');
+  generateBtn.textContent = 'Creating Key...';
 
   setTimeout(() => {
-    const key = `ACE-${randomBlock(4)}-${randomBlock(4)}-${randomBlock(3)}`;
+    const key = `ACE-${randomBlock(5)}-${randomBlock(4)}-${randomBlock(3)}`;
     keyDisplay.textContent = key;
-    keyDisplay.classList.add('glow', 'active');
+    keyDisplay.classList.add('ready');
 
-    setTimeout(() => keyDisplay.classList.remove('active'), 1200);
+    showStatus("Key ready! Copy & use it now.", "success");
 
-    showStatus("Key generated successfully!", "success");
-
+    generateBtn.disabled = false;
     generateBtn.classList.remove('loading');
     generateBtn.textContent = 'Generate New Key';
-    generateBtn.disabled = false;
-  }, 900);
+  }, 1100);
 }
 
 function copyKey() {
   const text = keyDisplay.textContent.trim();
-  if (!text || text.includes('Click') || text.includes('Generate')) {
+  if (text.includes('Click') || text.includes('Generate')) {
     showStatus("Generate a key first!", "error");
     return;
   }
 
   navigator.clipboard.writeText(text)
-    .then(() => showStatus("Key copied to clipboard ✓", "success"))
-    .catch(() => showStatus("Failed to copy key", "error"));
+    .then(() => showStatus("Copied successfully ✓", "success"))
+    .catch(() => showStatus("Copy failed", "error"));
 }
 
 generateBtn.addEventListener('click', generateKey);
