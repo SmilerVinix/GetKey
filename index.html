@@ -25,69 +25,56 @@
       border:1px solid rgba(255,0,140,0.22);
       box-shadow:0 0 80px rgba(200,0,255,0.35),inset 0 0 40px rgba(140,0,255,0.12);
       backdrop-filter:blur(14px);position:relative;overflow:hidden;
-      animation:cardglow 12s infinite alternate;
     }
-    @keyframes cardglow{0%{box-shadow:0 0 80px rgba(200,0,255,0.35)}100%{box-shadow:0 0 120px rgba(200,0,255,0.55)}}
-    .app::before{
-      content:"";position:absolute;inset:-60%;background:radial-gradient(circle at 40% 30%,rgba(255,0,180,0.18),transparent 45%);
-      pointer-events:none;animation:pulse-bg 20s infinite alternate;
-    }
-    @keyframes pulse-bg{0%{transform:scale(1);opacity:0.6}100%{transform:scale(1.5);opacity:0.9}}
     h1{
-      text-align:center;font-family:'Orbitron',sans-serif;font-size:2.8rem;font-weight:900;
+      text-align:center;font-family:'Orbitron',sans-serif;font-size:2.6rem;font-weight:900;
       background:linear-gradient(90deg,#ff00b3,#c700ff,#00eaff,#ff00b3);
-      background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;
-      text-shadow:0 0 25px rgba(180,0,255,0.8);margin-bottom:28px;letter-spacing:3px;
+      background-size:300%;
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      text-shadow:0 0 25px rgba(180,0,255,0.8);
+      margin-bottom:24px;letter-spacing:3px;
       animation:gradient 8s linear infinite;
     }
-    @keyframes gradient{background-position:0% 50%,100% 50%}
-    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+    @keyframes gradient{to{background-position:300% 0}}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
     select,button{
-      width:100%;padding:16px;border-radius:12px;
-      border:1px solid rgba(200,0,255,0.45);background:rgba(35,12,70,0.65);color:#e0e0ff;
-      font-size:1.05rem;font-weight:500;cursor:pointer;transition:all .25s;
-    }
-    select:hover,select:focus{
-      border-color:#ff00d0;box-shadow:0 0 20px rgba(255,0,210,0.5);background:rgba(60,25,100,0.8);
+      width:100%;padding:14px;border-radius:12px;
+      border:1px solid rgba(200,0,255,0.45);
+      background:rgba(35,12,70,0.65);
+      color:#e0e0ff;font-size:1rem;cursor:pointer;
     }
     button{
-      grid-column:span 2;position:relative;overflow:hidden;
-      background:linear-gradient(90deg,#ff0077,#dd00ff,#aa00ff);border:none;font-weight:800;
-      letter-spacing:1.5px;box-shadow:0 8px 25px rgba(220,0,200,0.6);text-transform:uppercase;
+      grid-column:span 2;
+      background:linear-gradient(90deg,#ff0077,#dd00ff,#aa00ff);
+      border:none;font-weight:800;letter-spacing:1.5px;
     }
-    button::after{content:"";position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.3);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
-    button:active::after{width:300px;height:300px;opacity:0}
-    button:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 14px 35px rgba(240,0,220,0.8)}
-    button.loading{animation:pulse 1.5s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
-    button.stop{background:linear-gradient(90deg,#ff4488,#ff3366,#ff1a4d);box-shadow:0 8px 25px rgba(255,80,100,0.6)}
-    .stats{display:flex;justify-content:space-between;margin:20px 0;font-size:1rem;color:#cc99ff;text-shadow:0 0 10px rgba(200,120,255,0.6)}
+    button.stop{
+      background:linear-gradient(90deg,#ff4488,#ff3366,#ff1a4d);
+    }
+    .stats{
+      display:flex;justify-content:space-between;
+      margin:18px 0;font-size:0.95rem;color:#cc99ff;
+    }
     .status{
-      text-align:center;font-size:1.5rem;font-weight:800;margin:14px 0 24px;letter-spacing:3px;
-      transition:all .4s;
+      text-align:center;font-size:1.4rem;font-weight:800;
+      margin-bottom:20px;letter-spacing:3px;
     }
-    .status.running{
-      color:#00ffcc;text-shadow:0 0 20px #00ffcc,0 0 40px #00ff99;
-      animation:glitch 2s infinite;
-    }
-    @keyframes glitch{0%{text-shadow:2px 0 #ff00aa,-2px 0 #00ffff}10%{text-shadow:-2px 0 #ff00aa,2px 0 #00ffff}20%{text-shadow:0 0 #ff00aa}100%{text-shadow:0 0 #00ffff}}
-    .status.stopped{color:#ff7777;text-shadow:0 0 20px #ff7777}
+    .status.running{color:#00ffcc}
+    .status.stopped{color:#ff7777}
     .log{
-      background:rgba(8,3,25,0.8);border-radius:14px;padding:16px;max-height:420px;
-      overflow-y:auto;font-size:0.96rem;border:1px solid rgba(140,0,255,0.2);
-      box-shadow:inset 0 0 25px rgba(0,0,0,0.7);
+      background:rgba(8,3,25,0.8);
+      border-radius:14px;padding:14px;
+      max-height:380px;overflow-y:auto;
+      font-size:0.9rem;
+      border:1px solid rgba(140,0,255,0.2);
     }
     .log-entry{
-      margin:8px 0;padding:8px 12px;border-radius:8px;background:rgba(25,12,60,0.5);
-      transition:all .2s;opacity:0;transform:translateY(10px);animation:fadeIn .4s forwards;
+      margin:6px 0;padding:6px 10px;border-radius:8px;
+      background:rgba(25,12,60,0.5);
     }
-    @keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
-    .ok{background:rgba(0,240,160,0.22);color:#00ffcc}
-    .bad{background:rgba(255,80,100,0.22);color:#ff9999}
-    .error{background:rgba(255,200,80,0.22);color:#ffdd88}
-    .log::-webkit-scrollbar{width:8px}
-    .log::-webkit-scrollbar-track{background:rgba(50,25,90,0.4)}
-    .log::-webkit-scrollbar-thumb{background:#bb66ff;border-radius:4px}
+    .ok{color:#00ffcc}
+    .bad{color:#ff9999}
+    .error{color:#ffdd88}
   </style>
 </head>
 <body>
@@ -107,7 +94,7 @@
     </select>
 
     <select id="speed">
-      <option value="1">1 check/sec</option>
+      <option value="1">1 / sec</option>
       <option value="2">2 / sec</option>
       <option value="3" selected>3 / sec</option>
       <option value="5">5 / sec (risky)</option>
@@ -123,112 +110,115 @@
   </div>
 
   <div class="status stopped" id="status">OFFLINE</div>
-
   <div class="log" id="log"></div>
 </div>
 
 <script>
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-const logEl   = document.getElementById("log");
+const logEl = document.getElementById("log");
 const statusEl = document.getElementById("status");
-const countEl  = document.getElementById("count");
-const availEl  = document.getElementById("avail");
+const countEl = document.getElementById("count");
+const availEl = document.getElementById("avail");
 const startBtn = document.getElementById("start");
-const stopBtn  = document.getElementById("stop");
+const stopBtn = document.getElementById("stop");
 
 let running = false;
-let timer;
 let checked = 0;
 let available = 0;
 
-function randomName(len) {
-  let s = "";
-  for (let i = 0; i < len; i++) {
-    s += chars[Math.floor(Math.random() * chars.length)];
+function randomName(len){
+  let s="";
+  for(let i=0;i<len;i++){
+    s+=chars[Math.floor(Math.random()*chars.length)];
   }
   return s;
 }
 
-function addLog(msg, type = "info") {
-  const div = document.createElement("div");
-  div.className = `log-entry ${type}`;
-  div.textContent = msg;
-  logEl.insertAdjacentElement("afterbegin", div);
-  while (logEl.children.length > 200) logEl.removeChild(logEl.lastChild);
+function addLog(msg,type="info"){
+  const d=document.createElement("div");
+  d.className="log-entry "+type;
+  d.textContent=msg;
+  logEl.prepend(d);
+  if(logEl.children.length>200){
+    logEl.removeChild(logEl.lastChild);
+  }
 }
 
-async function check() {
-  if (!running) return;
+async function check(){
+  if(!running) return;
 
-  const len = parseInt(document.getElementById("length").value);
-  const name = randomName(len);
+  const len=parseInt(document.getElementById("length").value);
+  const name=randomName(len);
 
   checked++;
-  countEl.textContent = checked;
+  countEl.textContent=checked;
 
-  try {
-    // Use roproxy.com – dedicated Roblox proxy, usually avoids 403
-    const url = `https://auth.roproxy.com/v1/usernames/validate?username=${encodeURIComponent(name)}&birthday=2000-01-01&context=Signup`;
-
-    const r = await fetch(url, {
-      method: "GET",
-      cache: "no-cache"
+  try{
+    const r=await fetch("https://auth.roproxy.com/v1/usernames/validate",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"application/json"
+      },
+      body:JSON.stringify({
+        username:name,
+        birthday:"2000-01-01",
+        context:"Signup"
+      })
     });
 
-    if (!r.ok) {
-      throw new Error(`HTTP ${r.status} - ${r.statusText || "Forbidden/Proxy issue"}`);
-    }
+    if(!r.ok) throw new Error("HTTP "+r.status);
 
-    const data = await r.json();
+    const data=await r.json();
 
-    if (data.code === 0) {
+    if(data.code===0){
       available++;
-      availEl.textContent = available;
-      addLog(`✔  ${name}  → AVAILABLE`, "ok");
-    } else if (data.code === 10) {
-      addLog(`✖  ${name}  taken`, "bad");
-    } else {
-      addLog(`⚠  ${name}  → ${data.message || "invalid"} (code: ${data.code})`, "error");
+      availEl.textContent=available;
+      addLog("✔ "+name+" → AVAILABLE","ok");
+    }else if(data.code===10){
+      addLog("✖ "+name+" → taken","bad");
+    }else{
+      addLog("⚠ "+name+" → "+(data.message||"invalid"),"error");
     }
-  } catch (err) {
-    addLog(`⚠ ERROR  ${name}  → ${err.message || "network/proxy/Roblox denied (403?)"}`, "error");
+  }catch(e){
+    addLog("⛔ "+name+" → blocked / rate-limited","error");
   }
 
-  // Tiny random delay to mimic human-like requests (helps avoid bans)
-  await new Promise(r => setTimeout(r, Math.random() * 300));
+  await new Promise(r=>setTimeout(r,450+Math.random()*400));
 }
 
-function startScan() {
-  if (running) return;
-  running = true;
-  checked = 0; available = 0;
-  countEl.textContent = "0";
-  availEl.textContent = "0";
+async function startScan(){
+  if(running) return;
+  running=true;
 
-  startBtn.disabled = true;
-  startBtn.classList.add("loading");
-  startBtn.textContent = "Scanning...";
-  stopBtn.disabled = false;
-  statusEl.textContent = "SCANNING";
-  statusEl.className = "status running";
+  checked=0; available=0;
+  countEl.textContent="0";
+  availEl.textContent="0";
 
-  const baseMs = 1000 / parseFloat(document.getElementById("speed").value);
-  timer = setInterval(check, baseMs);
+  startBtn.disabled=true;
+  stopBtn.disabled=false;
+  statusEl.textContent="SCANNING";
+  statusEl.className="status running";
+
+  const delay=1000/parseFloat(document.getElementById("speed").value);
+
+  while(running){
+    await check();
+    await new Promise(r=>setTimeout(r,delay));
+  }
 }
 
-function stopScan() {
-  running = false;
-  clearInterval(timer);
-  startBtn.disabled = false;
-  startBtn.classList.remove("loading");
-  startBtn.textContent = "▶ Launch Scan";
-  stopBtn.disabled = true;
-  statusEl.textContent = "OFFLINE";
-  statusEl.className = "status stopped";
+function stopScan(){
+  running=false;
+  startBtn.disabled=false;
+  stopBtn.disabled=true;
+  statusEl.textContent="OFFLINE";
+  statusEl.className="status stopped";
 }
 
-startBtn.onclick = startScan;
-stopBtn.onclick  = stopScan;
+startBtn.onclick=startScan;
+stopBtn.onclick=stopScan;
 </script>
+
 </body>
 </html>
